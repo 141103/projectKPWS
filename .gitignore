@@ -1,0 +1,31 @@
+# Dependencies
+**/node_modules/
+
+# Environment / secrets
+**/.env
+**/.env.*
+!.env.example
+
+# Build
+**/dist/
+**/build/
+
+# Editor
+.vscode/
+
+# ZIP / archive
+*.zip
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary output
+**/output.txt
+
+# Temporary scripts
+**/hash.js
+**/output.txt

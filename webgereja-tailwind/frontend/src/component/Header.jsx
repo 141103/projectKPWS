@@ -5,13 +5,13 @@ import {
   
   // --- Ikon Fungsional ---
   Book, Camera, Calendar, HandCoins, Heart, GraduationCap, Music, MapPin, Phone, Mail, Newspaper, Gift, DollarSign, ChevronLeft, 
-  
+  UsersRound,
   // --- Ikon Modal & Loader ---
   Loader, Download 
   
 } from 'lucide-react';
 
-import { Link } from "react-router-dom";
+import {  Link, useLocation } from "react-router-dom";
 import defaultChurchImg from '../assets/PhotoGereja.jpg';
 // Gunakan defaultChurchImg sebagai fallback
 
@@ -127,7 +127,6 @@ const safeJsonParse = (jsonString, fallbackValue = []) => {
  * Hook kustom untuk Dark Mode
  */
 const useDarkMode = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
 
     // Inisialisasi dari localStorage atau preferensi sistem
     useEffect(() => {
@@ -369,12 +368,6 @@ const useGlobalConfig = () => {
                     throw new Error('Gagal mengambil konfigurasi dari server');
                 }
                 const data = await response.json();
-                
-                // data is an object, not an array of key-value pairs
-                // const configObject = data.reduce((acc, item) => {
-                //     acc[item.key_name] = item.key_value;
-                //     return acc;
-                // }, {});
 
                 const finalConfig = {
                     CHURCH_PHOTO_URL: data.CHURCH_PHOTO_PATH 
@@ -479,13 +472,13 @@ const ServiceModal = ({ service, onClose }) => {
             jadwal: 'Pukul 07:00 dan 09:30 WIB (Gereja Induk).'
         },
         'Persekutuan': {
-            icon: <Heart className="w-16 h-16 text-red-500 mx-auto mb-4" />,
+            icon: <Heart className="w-16 h-16 text-green-500 mx-auto mb-4" />,
             title: 'Persekutuan Keluarga & Kelompok',
             body: 'Persekutuan adalah sarana untuk mempererat tali kasih antar jemaat. Kami memiliki persekutuan khusus untuk kaum muda, wanita, pria, dan persekutuan wilayah (kelompok). Kegiatan ini mencakup doa bersama, diskusi firman, dan kegiatan sosial.',
             jadwal: 'Jadwal bervariasi per kelompok (cek warta jemaat).'
         },
         'Sekolah Minggu': {
-            icon: <GraduationCap className="w-16 h-16 text-green-500 mx-auto mb-4" />,
+            icon: <UsersRound className="w-16 h-16 text-yellow-500 mx-auto mb-4" />,
             title: 'Sekolah Minggu / Anak',
             body: 'Sekolah Minggu bertujuan menanamkan nilai-nilai Kristiani sejak dini. Kami menggunakan kurikulum yang interaktif dan menyenangkan yang disesuaikan dengan kelompok usia anak, mulai dari balita hingga pra-remaja. Dilaksanakan bersamaan dengan ibadah kedua.',
             jadwal: 'Pukul 09:00 WIB, setiap Minggu.'
@@ -511,7 +504,7 @@ const ServiceModal = ({ service, onClose }) => {
             onClick={onClose} 
         >
             <div 
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300 scale-100 opacity-100 overflow-hidden"
+                className="bg-white dark:bg-[#0a0e1a] rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300 scale-100 opacity-100 overflow-hidden"
                 onClick={(e) => e.stopPropagation()} 
             >
                 <div className="p-6 sm:p-8">
@@ -585,15 +578,9 @@ const Hero = ({ isDarkMode, churchPhotoUrl, isConfigLoading }) => {
                 <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 mb-8 drop-shadow transition-colors duration-500">
                     Melayani, bersaksi, dan bersekutu dalam kasih karunia Tuhan Yesus Kristus. Mari bertumbuh bersama dalam iman.
                 </p>
-                <a 
-                    href="#jadwal"
-                    className={`inline-flex items-center justify-center px-8 py-3 border border-transparent 
-                                text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105 
-                                ${isDarkMode ? darkClass : lightClass} bg-blue-600 hover:bg-blue-700
-                                `}
-                >
-                    Lihat Jadwal Ibadah
-                </a>
+               <Link to="/profile" className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105 text-white shadow-lg bg-blue-600 hover:bg-blue-700">
+                    Lihat Profil Gereja
+                </Link>
             </div>
         </section>
     );
@@ -618,7 +605,7 @@ const PhotoModal = ({ photo, onClose }) => {
             onClick={onClose} 
         >
             <div 
-                className="relative max-w-4xl w-full h-auto max-h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden"
+                className="relative max-w-4xl w-full h-auto max-h-[90vh] bg-white dark:bg-[#0a0e1a] rounded-lg shadow-2xl overflow-hidden"
                 onClick={(e) => e.stopPropagation()} // Mencegah klik di dalam menutup modal
             >
                 {/* Tombol Tutup */}
@@ -642,7 +629,7 @@ const PhotoModal = ({ photo, onClose }) => {
                     </div>
                     
                     {/* Caption dan Download */}
-            <div className="p-4 bg-gray-100 dark:bg-gray-900 flex justify-between items-center">
+            <div className="p-4 bg-gray-100 dark:bg-[#0a0e1a] flex justify-between items-center">
                 <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{photo.caption}</p>
                 <a
                     href={downloadApiUrl} 
@@ -680,7 +667,7 @@ const CustomInfoBlock = ({ content, title }) => {
 
     return (
         // Gunakan col-span-2 agar selalu mengambil lebar penuh
-        <div className="md:col-span-2 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border-t-4 border-purple-500">
+        <div className="md:col-span-2 bg-white dark:bg-[#0a0e1a] p-6 rounded-xl shadow-lg border-t-4 border-purple-500">
             <div className="flex items-center mb-4">
                 <Newspaper className="w-6 h-6 text-purple-500 mr-2"/> 
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white">{title || 'Informasi Khusus'}</h4>
@@ -734,7 +721,7 @@ const WartaJemaat = () => {
     // === LOGIC TAMPILAN LOADING / ERROR / URL ===
     if (isLoading) {
         return (
-            <section id="warta-jemaat" className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+            <section id="warta-jemaat" className="py-20 bg-gray-50 dark:bg-[#0a0e1a] transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <h2 className="text-3xl font-bold text-slate-800 dark:text-gray-100 mb-8">Warta Jemaat</h2>
                     <p className="text-blue-500 dark:text-blue-400 flex items-center justify-center">
@@ -749,7 +736,7 @@ const WartaJemaat = () => {
 
     if (!latestWarta) {
         return (
-             <section id="warta-jemaat" className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+             <section id="warta-jemaat" className="py-20 bg-gray-50 dark:bg-[#0a0e1a] transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <h2 className="text-3xl font-bold text-slate-800 dark:text-gray-100 mb-8">Warta Jemaat</h2>
                     <p className="text-red-500 dark:text-red-400">Tidak ada data Warta Jemaat terbaru yang ditemukan.</p>
@@ -781,7 +768,7 @@ const WartaJemaat = () => {
 
 
     return (
-        <section id="warta-jemaat" className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <section id="warta-jemaat" className="py-20 bg-gray-50 dark:bg-[#0a0e1a] transition-colors duration-300">
             {/* ... (Header dan PDF Viewer Section tidak berubah) ... */}
             
             <SectionHeader 
@@ -797,7 +784,7 @@ const WartaJemaat = () => {
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Dokumen Warta Jemaat (PDF)</h3>
                     <p className="text-gray-600 dark:text-gray-400">Tampilan lengkap Warta Jemaat</p>
                 </div>
-                <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-4 sm:p-6 mb-10">
+                <div className="bg-white dark:bg-[#0a0e1a] rounded-xl shadow-2xl p-4 sm:p-6 mb-10">
                     <div className="w-full h-[600px] overflow-hidden border-4 border-indigo-500 dark:border-indigo-400 rounded-lg">
                         <iframe
                             src={currentPDFViewerURL}
@@ -838,7 +825,7 @@ const WartaJemaat = () => {
                     <div className="grid md:grid-cols-2 gap-8">
                         
                         {/* 📌 KITA HANYA MENGGUNAKAN SATU DIV DENGAN col-span-2 */}
-                        <div className="md:col-span-2 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border-t-4 border-yellow-500">
+                        <div className="md:col-span-2 bg-white dark:bg-[#0a0e1a] p-6 rounded-xl shadow-lg border-t-4 border-yellow-500">
                             <div className="flex items-center mb-4">
                                 <HandCoins className="w-6 h-6 text-yellow-500 mr-2"/> 
                                 <h4 className="text-xl font-bold text-gray-900 dark:text-white">Persembahan Istimewa</h4>
@@ -852,7 +839,7 @@ const WartaJemaat = () => {
                                     <thead className="bg-gray-50 dark:bg-gray-700">
                                         {/* ... (thead tabel tidak berubah) ... */}
                                     </thead>
-                                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    <tbody className="bg-white dark:bg-[#0a0e1a] divide-y divide-gray-200 dark:divide-gray-700">
                                         {finalSpecialOfferingData.map((item, index) => (
                                             <tr key={`spec-${index}`}>
                                                 <td className="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{index + 1}.</td>
@@ -914,48 +901,30 @@ const FloatingAdminButton = () => {
 
 // --- DEVOTION COMPONENT ---
 const Devotion = () => {
-    // FIX: Gunakan hook useDevotions yang telah dimodifikasi
-    const { 
-        currentDevotion, 
-        isLoading, 
-        error, 
-        goToPrevious, 
-        goToNext, 
-        canGoPrevious, 
+    const {
+        currentDevotion,
+        isLoading,
+        error,
+        goToPrevious,
+        goToNext,
+        canGoPrevious,
         canGoNext,
         currentPage
     } = useDevotions();
 
-    // Helper untuk memformat tanggal YYYY-MM-DD menjadi DD MMMM YYYY
-const formatDate = (dateString) => {
-    if (!dateString) return 'Tanggal Tidak Diketahui';
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Tanggal Tidak Diketahui';
+        let date = new Date(dateString + 'T00:00:00');
+        if (isNaN(date.getTime())) date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Tanggal Invalid';
+        return date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+    };
 
-    let date;
-
-    // 1. Coba parsing dengan penambahan T00:00:00 (metode timezone-safe yang paling sering gagal di browser)
-    date = new Date(dateString + 'T00:00:00'); 
-    
-    // Jika parsing metode 1 GAGAL, coba parsing langsung (metode yang lebih forgiving)
-    if (isNaN(date.getTime())) {
-        // 2. Coba parsing langsung (tanpa T00:00:00)
-        date = new Date(dateString); 
-    }
-
-    // 🛑 LAKUKAN VALIDASI AKHIR
-    if (isNaN(date.getTime())) {
-        // Jika kedua metode gagal, string dari DB memang bermasalah
-        return 'Tanggal Invalid'; 
-    }
-
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('id-ID', options);
-};
-    
     if (isLoading) {
         return (
-            <section id="renungan" className="py-12 sm:py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
-                 <div className="max-w-4xl mx-auto px-4 text-center">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">Renungan Harian</h2>
+            <section id="renungan" className="py-12 sm:py-20 bg-white dark:bg-[#0a0e1a] transition-colors duration-500">
+                <div className="max-w-4xl mx-auto px-4 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8">Renungan Harian</h2>
                     <p className="text-blue-500 dark:text-blue-400 flex items-center justify-center">
                         <Loader className="w-5 h-5 animate-spin mr-2" />
                         Memuat Renungan...
@@ -964,76 +933,96 @@ const formatDate = (dateString) => {
             </section>
         );
     }
-    
+
     if (!currentDevotion) {
-         return (
-            <section id="renungan" className="py-12 sm:py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
-                 <div className="max-w-4xl mx-auto px-4 text-center">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">Renungan Harian</h2>
-                    <p className="text-red-500 dark:text-red-400">Tidak ada data renungan yang tersedia saat ini. {error && `(${error})`}</p>
+        return (
+            <section id="renungan" className="py-12 sm:py-20 bg-white dark:bg-[#0a0e1a] transition-colors duration-500">
+                <div className="max-w-4xl mx-auto px-4 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-gray-100 mb-8">Renungan Harian</h2>
+                    <p className="text-red-500 dark:text-red-400">
+                        Tidak ada data renungan yang tersedia saat ini. {error && `(${error})`}
+                    </p>
                 </div>
             </section>
         );
     }
 
-    // Renungan hari ini adalah renungan pertama (index 0)
     const isToday = currentPage === 0;
-
-    // Pisahkan isi renungan berdasarkan baris baru untuk membuat paragraf
-    const paragraphs = currentDevotion.isi_renungan ? currentDevotion.isi_renungan.split('\n').filter(p => p.trim() !== '') : [];
-
+    const paragraphs = currentDevotion.isi_renungan
+        ? currentDevotion.isi_renungan.split('\n').filter(p => p.trim() !== '')
+        : [];
 
     return (
-        <section id="renungan" className="py-12 sm:py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
+        <section id="renungan" className="py-12 sm:py-20 bg-white dark:bg-[#0a0e1a] transition-colors duration-500">
             <div className="max-w-4xl mx-auto px-4">
-                <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">Renungan Harian</h2>
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl shadow-lg p-5 sm:p-8 border-t-8 border-red-500 transition-colors duration-500">
-                    <div className="mb-6">
-                        {/* FIX: Menggunakan kolom judul dari DB */}
-                        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-gray-100 mb-4">
-                            {currentDevotion.judul || 'Renungan Tanpa Judul'}
-                        </h3>
-                        <div className="flex flex-col sm:flex-row sm:justify-between text-gray-500 dark:text-gray-400 text-sm sm:text-base gap-2">
-                            <span>{formatDate(currentDevotion.tanggal)} {isToday && '(Hari Ini)'}</span>
-                            <span>{currentDevotion.pengarang || 'Pengarang Tidak Diketahui'}</span> 
+                <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">
+                    Renungan Harian
+                </h2>
+
+                <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 sm:p-8
+                                border border-gray-200 dark:border-slate-700 transition-all duration-500">
+
+                    {/* === NAVIGASI DI ATAS === */}
+                    <div className="flex items-center justify-between mb-6 pb-5 border-b border-gray-200 dark:border-slate-700">
+                        {/* Tombol Sebelumnya */}
+                        <button
+                            onClick={goToPrevious}
+                            disabled={!canGoPrevious}
+                            className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200
+                                ${canGoPrevious
+                                    ? 'text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-slate-700'
+                                    : 'text-gray-300 dark:text-gray-600 cursor-not-allowed'}`}
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                            Sebelumnya
+                        </button>
+
+                        {/* Tanggal & Label */}
+                        <div className="text-center">
+                            <p className="text-sm sm:text-base font-semibold text-slate-700 dark:text-gray-200">
+                                {formatDate(currentDevotion.tanggal)}
+                            </p>
+                            {isToday && (
+                                <span className="text-xs text-blue-500 dark:text-blue-400 font-medium">
+                                    (Terbaru)
+                                </span>
+                            )}
                         </div>
+
+                        {/* Tombol Selanjutnya */}
+                        <button
+                            onClick={goToNext}
+                            disabled={!canGoNext}
+                            className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200
+                                ${canGoNext
+                                    ? 'text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-slate-700'
+                                    : 'text-gray-300 dark:text-gray-600 cursor-not-allowed'}`}
+                        >
+                            Selanjutnya
+                            <ChevronLeft className="w-4 h-4 rotate-180" />
+                        </button>
                     </div>
+
+                    {/* === JUDUL === */}
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-gray-100 mb-5">
+                        {currentDevotion.judul || 'Renungan Tanpa Judul'}
+                    </h3>
+
+                    {/* === AYAT (Quote Box) === */}
                     <div className="bg-gray-100 dark:bg-gray-700 p-4 sm:p-6 rounded-lg mb-6 border-l-4 border-blue-500">
-                        <p className="italic text-gray-700 dark:text-gray-300 mb-4 text-base sm:text-lg">
+                        <p className="italic text-gray-700 dark:text-gray-300 mb-3 text-base sm:text-lg">
                             {currentDevotion.teks_ayat}
                         </p>
-                        <span className="text-right block text-gray-600 dark:text-gray-400 italic text-sm sm:text-base">- {currentDevotion.ayat_referensi}</span>
+                        <span className="text-right block text-gray-600 dark:text-gray-400 italic text-sm sm:text-base">
+                            - {currentDevotion.ayat_referensi}
+                        </span>
                     </div>
+
+                    {/* === ISI RENUNGAN === */}
                     <div className="space-y-4 text-gray-700 dark:text-gray-300 text-base sm:text-lg">
-                        {/* Tampilkan Paragraf Isi Renungan */}
                         {paragraphs.map((p, index) => (
                             <p key={index} dangerouslySetInnerHTML={{ __html: p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
                         ))}
-                    </div>
-
-                    {/* NAVIGASI RENUNGAN */}
-                    <div className="mt-6 flex justify-between">
-                        <button 
-                            onClick={goToPrevious}
-                            disabled={!canGoPrevious} // Disable jika tidak ada renungan sebelumnya (maks. 3 hari ke belakang)
-                            className={`flex items-center font-semibold text-sm sm:text-base transition-colors ${
-                                canGoPrevious ? 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300' : 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                            }`}
-                        >
-                            <ChevronLeft className="w-5 h-5 mr-1" />
-                            Baca Renungan Sebelumnya
-                        </button>
-                         <button 
-                            onClick={goToNext}
-                            disabled={!canGoNext} // Disable jika sudah renungan hari ini (index 0)
-                            className={`flex items-center font-semibold text-sm sm:text-base transition-colors ${
-                                canGoNext ? 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300' : 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                            }`}
-                        >
-                            Baca Renungan Hari Ini
-                            {/* Rotasi ChevronLeft untuk menunjuk ke kanan */}
-                            <ChevronLeft className="w-5 h-5 ml-1 transform rotate-180" />
-                        </button>
                     </div>
                 </div>
             </div>
@@ -1042,70 +1031,169 @@ const formatDate = (dateString) => {
 };
 
 // --- SERVICES COMPONENT (Dengan logika Modal) ---
-const Services = () => { 
-    // State untuk mengontrol modal
+const Services = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
 
     const services = [
-        { icon: <Church className="w-12 h-12" />, title: 'Ibadah Minggu', desc: 'Ibadah minggu reguler dengan khotbah yang menguatkan iman dan persekutuan yang hangat.' },
-        { icon: <Heart className="w-12 h-12" />, title: 'Persekutuan', desc: 'Berbagai kelompok persekutuan untuk semua usia: remaja, dewasa muda, dan lansia.' },
-        { icon: <GraduationCap className="w-12 h-12" />, title: 'Sekolah Minggu', desc: 'Pendidikan iman untuk anak-anak dengan kurikulum yang menyenangkan.' },
-        { icon: <Book className="w-12 h-12" />, title: 'Pemahaman Alkitab', desc: 'Studi Alkitab mingguan untuk mendalami firman Tuhan secara berkelompok.' }
+        {
+            icon: <Church className="w-11 h-11" />,
+            title: "Ibadah Minggu",
+            label: "Mingguan",
+            desc: "Ibadah minggu reguler dengan khotbah yang menguatkan iman dan persekutuan yang hangat.",
+            topBar: "bg-blue-500",
+            bgColor: "bg-blue-50 dark:bg-blue-950/20",
+            labelBg: "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300",
+            iconColor: "text-blue-500",
+        },
+        {
+            icon: <Heart className="w-11 h-11" />,
+            title: "Persekutuan",
+            label: "Semua Usia",
+            desc: "Berbagai kelompok persekutuan untuk semua usia: remaja, dewasa muda, dan lansia.",
+            topBar: "bg-green-500",
+            bgColor: "bg-green-50 dark:bg-green-950/20",
+            labelBg: "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300",
+            iconColor: "text-green-500",
+        },
+        {
+            icon: <UsersRound className="w-11 h-11" />,
+            title: "Sekolah Minggu",
+            label: "Anak-anak",
+            desc: "Pendidikan iman untuk anak-anak dengan kurikulum yang menyenangkan.",
+            topBar: "bg-yellow-500",
+            bgColor: "bg-yellow-50 dark:bg-yellow-950/20",
+            labelBg: "bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300",
+            iconColor: "text-yellow-500",
+        },
+        {
+            icon: <Book className="w-11 h-11" />,
+            title: "Pemahaman Alkitab",
+            label: "Semua Usia",
+            desc: "Studi Alkitab mingguan untuk mendalami firman Tuhan secara berkelompok.",
+            topBar: "bg-purple-500",
+            bgColor: "bg-purple-50 dark:bg-purple-950/20",
+            labelBg: "bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300",
+            iconColor: "text-purple-500",
+        },
     ];
 
-    // Fungsi untuk membuka modal dan menyimpan data layanan yang diklik
     const openModal = (service) => {
         setSelectedService(service);
         setIsModalOpen(true);
     };
 
-    // Fungsi untuk menutup modal
     const closeModal = () => {
         setIsModalOpen(false);
-        // Timeout singkat agar transisi penutupan terlihat mulus sebelum data dihapus
-        // Ini adalah praktik yang baik untuk UX modal
         setTimeout(() => setSelectedService(null), 300);
     };
 
     return (
-        <section id="layanan" className="py-12 sm:py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-500">
+        <section
+            id="layanan"
+            className="py-16 sm:py-24 bg-gray-50 dark:bg-[#0a0e1a] transition-colors duration-500"
+        >
             <div className="max-w-7xl mx-auto px-4">
-                <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">Layanan Gereja</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
+
+                <h2 className="text-4xl font-bold text-center text-slate-800 dark:text-white mb-14">
+                    Layanan Gereja
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
                     {services.map((service, idx) => (
-                        // Menambahkan onClick handler untuk menampilkan modal
-                        <div 
-                            key={idx} 
-                            onClick={() => openModal(service)} // Panggil openModal saat diklik
-                            className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-center transform hover:scale-[1.02] cursor-pointer border-t-4 border-blue-500 hover:border-red-500"
+                        <div
+                            key={idx}
+                            onClick={() => openModal(service)}
+                            className={`
+                                group
+                                ${service.bgColor}
+                                rounded-2xl
+                                border
+                                border-gray-200
+                                dark:border-gray-700
+                                overflow-hidden
+                                shadow-lg
+                                hover:shadow-2xl
+                                transition-all
+                                duration-300
+                                hover:-translate-y-2
+                                hover:scale-[1.02]
+                                cursor-pointer
+                            `}
                         >
-                            <div className="text-blue-500 flex justify-center mb-4">{service.icon}</div>
-                            <h3 className="text-xl sm:text-2xl font-bold mb-2 text-slate-800 dark:text-gray-100">
-                                {service.title}
-                            </h3>
-                            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
-                                {service.desc}
-                            </p>
-                            <span className="text-sm text-red-500 mt-2 block font-semibold">
-                                Klik untuk Detail
-                            </span>
+
+                            {/* Garis warna atas */}
+                            <div className={`h-1.5 w-full ${service.topBar}`}></div>
+
+                            <div className="p-8">
+
+                                {/* Label */}
+                                <span
+                                    className={`
+                                        inline-flex
+                                        items-center
+                                        rounded-full
+                                        px-3
+                                        py-1
+                                        text-sm
+                                        font-semibold
+                                        mb-5
+                                        ${service.labelBg}
+                                    `}
+                                >
+                                    {service.label}
+                                </span>
+
+                                {/* Icon */}
+                                <div className={`${service.iconColor} mb-5`}>
+                                    {service.icon}
+                                </div>
+
+                                {/* Judul */}
+                                <h3 className="text-3xl font-bold text-slate-800 dark:text-white mb-3">
+                                    {service.title}
+                                </h3>
+
+                                {/* Deskripsi */}
+                                <p className="text-lg leading-8 text-gray-600 dark:text-gray-300 mb-6">
+                                    {service.desc}
+                                </p>
+
+                                {/* Link */}
+                                <span
+                                    className={`
+                                        inline-block
+                                        text-sm
+                                        font-bold
+                                        uppercase
+                                        tracking-widest
+                                        ${service.iconColor}
+                                        transition-all
+                                        duration-300
+                                        group-hover:translate-x-1
+                                    `}
+                                >
+                                    Klik untuk Detail →
+                                </span>
+
+                            </div>
                         </div>
                     ))}
+
                 </div>
+
             </div>
-            
-            {/* Render Modal jika isModalOpen bernilai true */}
+
             {isModalOpen && (
-                <ServiceModal 
-                    service={selectedService} 
-                    onClose={closeModal} 
+                <ServiceModal
+                    service={selectedService}
+                    onClose={closeModal}
                 />
             )}
         </section>
     );
 };
-
 
 // =========================================================================================================================================
 // Komponen Schedule (Jadwal)
@@ -1126,7 +1214,7 @@ const Schedule = () => {
 
     if (isLoading) {
         return (
-             <section id="jadwal" className="py-12 sm:py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
+             <section id="jadwal" className="py-12 sm:py-20 bg-white dark:bg-[#0a0e1a] transition-colors duration-500">
                 <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">Jadwal Kegiatan</h2>
                 <p className="text-center text-blue-500 flex items-center justify-center">
                     {/* Asumsi Loader sudah diimpor */}
@@ -1140,7 +1228,7 @@ const Schedule = () => {
     // Jika tidak ada data aktif dari database
     if (itemsToDisplay.length === 0) {
         return (
-             <section id="jadwal" className="py-12 sm:py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
+             <section id="jadwal" className="py-12 sm:py-20 bg-white dark:bg-[#0a0e1a] transition-colors duration-500">
                 <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">Jadwal Kegiatan</h2>
                 <p className="text-center text-gray-500 dark:text-gray-400">Tidak ada jadwal yang aktif saat ini.</p>
              </section>
@@ -1148,36 +1236,114 @@ const Schedule = () => {
     }
 
     return (
-        <section id="jadwal" className="py-12 sm:py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
+        <section id="jadwal" className="py-16 sm:py-24 bg-gray-50 dark:bg-[#0a0e1a] transition-colors duration-500">
             <div className="max-w-7xl mx-auto px-4">
                 <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-8 sm:mb-12">
                     Jadwal Kegiatan
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {itemsToDisplay.map((item, index) => (
-                        <div key={item.id || index} className="p-4 border-b-4 border-indigo-500 bg-white dark:bg-gray-700 rounded-lg shadow-md transition-shadow hover:shadow-lg flex justify-between items-center">
-                            
-                            {/* KIRI: Hari, Nama Kegiatan/Detail */}
-                            <div className="flex items-start">
-                                {/* Ikon Kalender dan Hari */}
-                                <Calendar size={24} className="text-indigo-600 dark:text-indigo-400 mr-3 mt-1 flex-shrink-0" />
-                                <div>
-                                    {/* Hari (Judul Utama) */}
-                                    <span className="font-bold text-lg text-gray-900 dark:text-white">{item.hari}</span>
-                                    
-                                    {/* 📌 PERBAIKAN: Tampilkan DETAIL (misalnya "Induk Depok I") di baris kedua, atau Nama Kegiatan */}
-                                    <p className="text-gray-700 dark:text-gray-300 text-sm mt-1">
-                                        {/* Jika item.detail ada, gunakan detail. Jika tidak, gunakan nama_kegiatan. */}
-                                        {item.detail || item.nama_kegiatan}
-                                    </p>
-                                </div>
+                        <div key={item.id || index}
+                        className="bg-white dark:bg-slate-800 border border-gray-200
+                        dark:border-slate-700
+                        rounded-2xl
+                        shadow-lg
+                        hover:shadow-xl
+                        transition-all
+                        duration-300
+                        hover:-translate-y-1
+                        p-6
+                        "
+                        >
+
+                        <div className="flex justify-between items-start mb-5">
+
+                            <div>
+                                <p className="
+                                text-sm
+                                uppercase
+                                tracking-widest
+                                text-blue-600
+                                dark:text-blue-300
+                                font-semibold
+                                ">
+                                Hari
+                                </p>
+                                <h3 className="
+                                text-2xl
+                                font-bold
+                                text-slate-800
+                                dark:text-white
+                                ">
+                                {item.hari}
+                                </h3>
                             </div>
-                            
-                            {/* KANAN: Waktu */}
-                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-3 py-1 rounded-full whitespace-nowrap">
+                            <div
+                                className="
+                                bg-blue-100
+                                dark:bg-slate-700
+                                rounded-full
+                                px-4
+                                py-2
+                                "
+                                >
+
+                                <span
+                                className="
+                                font-semibold
+                                text-blue-700
+                                dark:text-blue-300
+                                "
+                                >
                                 {item.waktu}
-                            </span>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            className="
+                            flex
+                            items-center
+                            gap-3
+                            mt-2
+                            "
+                            >
+                            <MapPin
+                            className="
+                            w-5
+                            h-5
+                            text-blue-500
+                            "
+                            />
+                           <div className="flex flex-col">
+
+                                <span
+                                    className="
+                                    text-xs
+                                    uppercase
+                                    tracking-wider
+                                    text-gray-500
+                                    dark:text-gray-400
+                                    "
+                                >
+                                    Lokasi Ibadah
+                                </span>
+
+                                <span
+                                    className="
+                                    text-lg
+                                    font-bold
+                                    text-slate-800
+                                    dark:text-white
+                                    "
+                                >
+                                    {item.detail || item.nama_kegiatan}
+                                </span>
+
+                            </div>
+                        </div>
                         </div>
                     ))}
                 </div>
@@ -1244,7 +1410,7 @@ const Gallery = () => {
 
   if (isLoading) {
        return (
-            <section id="galeri" className="py-20 bg-gray-50 dark:bg-gray-800">
+            <section id="galeri" className="py-20 bg-gray-50 dark:bg-[#0a0e1a]">
                 <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-slate-800 dark:text-gray-100">Galeri Kegiatan</h2>
                 <p className="text-center text-blue-500 flex items-center justify-center">
                     <Loader className="w-5 h-5 animate-spin mr-2" /> Memuat Galeri...
@@ -1254,7 +1420,7 @@ const Gallery = () => {
   }
 
   return (
-        <section id="galeri" className="py-20 bg-gray-50 dark:bg-gray-800">
+        <section id="galeri" className="py-20 bg-gray-50 dark:bg-[#0a0e1a]">
             <div className="max-w-7xl mx-auto px-4">
                 {/* ... (Header) ... */}
                 <SectionHeader 
@@ -1334,7 +1500,7 @@ const Gallery = () => {
 const Contact = () => (
   <section
     id="kontak"
-    className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-500"
+    className="py-20 bg-gray-50 dark:bg-[#0a0e1a] transition-colors duration-500"
   >
     <div className="max-w-7xl mx-auto px-4">
       <h2 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 dark:text-gray-100 mb-12">
@@ -1345,7 +1511,7 @@ const Contact = () => (
         {/* === KIRI: Info Kontak === */}
         <div className="flex flex-col space-y-6">
           {/* Telepon */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 flex items-center space-x-5 hover:shadow-xl transition-transform hover:scale-[1.02]">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 flex items-center space-x-5 hover:shadow-xl transition-transform hover:scale-[1.02]">
             <Phone className="w-10 h-10 text-blue-500 flex-shrink-0" />
             <div>
               <h4 className="font-bold text-xl text-slate-800 dark:text-gray-100 mb-1">
@@ -1358,7 +1524,7 @@ const Contact = () => (
           </div>
 
           {/* Email */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 flex items-center space-x-5 hover:shadow-xl transition-transform hover:scale-[1.02]">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 flex items-center space-x-5 hover:shadow-xl transition-transform hover:scale-[1.02]">
             <Mail className="w-10 h-10 text-blue-500 flex-shrink-0" />
             <div>
               <h4 className="font-bold text-xl text-slate-800 dark:text-gray-100 mb-1">
@@ -1371,7 +1537,7 @@ const Contact = () => (
           </div>
 
           {/* Instagram */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 flex items-center space-x-5 hover:shadow-xl transition-transform hover:scale-[1.02]">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 flex items-center space-x-5 hover:shadow-xl transition-transform hover:scale-[1.02]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -1426,36 +1592,48 @@ import Navbar from './Navbar';
 // --- APP COMPONENT ---
 // =========================================================================================================================================
 
-const App = () => {
-    const [activeSection, setActiveSection] = useState('beranda');
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
+const App = ({ theme, toggleTheme }) => {
+    const [activeSection, setActiveSection] = useState("beranda");
+    const location = useLocation();
     const { config, isLoading: isConfigLoading } = useGlobalConfig();
+
+    const isDarkMode = theme === "dark";
+    const toggleDarkMode = toggleTheme;
 
     // Logic untuk mendeteksi section yang sedang aktif saat scroll
     useEffect(() => {
-        const sectionIds = ['beranda', 'warta-jemaat', 'renungan', 'layanan', 'jadwal', 'galeri', 'kontak'];
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    setActiveSection(entry.target.id);
-                }
-            });
-        }, {
-            root: null, 
-            rootMargin: '-16px 0px -70% 0px', 
-            threshold: 0.1 
-        });
 
-        sectionIds.forEach(id => {
-            const element = document.getElementById(id);
-            if (element) {
-                observer.observe(element);
+    if (location.state?.targetSection) return;
+
+    const sectionIds = [
+        "beranda",
+        "warta-jemaat",
+        "renungan",
+        "layanan",
+        "jadwal",
+        "galeri",
+        "kontak",
+    ];
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                setActiveSection(entry.target.id);
             }
         });
+    }, {
+        rootMargin: "-16px 0px -70% 0px",
+        threshold: 0.1,
+    });
 
-        // Clean up observer
-        return () => observer.disconnect();
-    }, []);
+    sectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+
+}, [location.state]);
 
     // Sinkronisasi kelas 'dark' ke elemen <html>
     useEffect(() => {
@@ -1467,6 +1645,26 @@ const App = () => {
         }
     }, [isDarkMode]);
 
+useEffect(() => {
+    if (!location.state?.targetSection) return;
+
+    const timer = setTimeout(() => {
+        const element = document.getElementById(location.state.targetSection);
+
+        if (element) {
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+
+            setActiveSection(location.state.targetSection);
+
+            window.history.replaceState({}, document.title);
+        }
+    }, 300);
+
+    return () => clearTimeout(timer);
+}, [location]);
 
     return (
         <div className="min-h-screen font-inter antialiased">
@@ -1491,7 +1689,22 @@ const App = () => {
                 <Contact />
             </main>
             <FloatingAdminButton />
-            <footer className="bg-slate-800 dark:bg-gray-900 text-white dark:text-gray-300 p-6 text-center text-sm shadow-inner transition-colors duration-500">
+            <footer
+                className="
+                    bg-white
+                    dark:bg-[#05070f]
+                    border-t
+                    border-slate-200
+                    dark:border-slate-800
+                    text-slate-700
+                    dark:text-gray-300
+                    p-6
+                    text-center
+                    text-sm
+                    transition-colors
+                    duration-500
+                "
+            >
                 &copy; {new Date().getFullYear()} GKJ Wates Selatan. Dibangun dengan Kasih.
             </footer>
         </div>
